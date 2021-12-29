@@ -9,19 +9,11 @@ NFTs with stake (for case if we will want this)
 
 Stake/Fetch/Sale
 
-1) Cut % of pool share (or WTOKEN) in fetch deposits.
-
-2) Enable/disable cut in fetch
-
-3) Change able commision for cut in from 1% to 5%
-
 4) Fetch with split SALE and DEX (can be changed in splitFormula).
 
 5) White list for sale and stake (users can not use sale or stake directly)
 
-6) antiDumpingDelay in stake (users can not claim a certain period)
-
-7) Split sale with LDManager (LD manager add LD with ETH and Tokens on his own balance and then burn pool shares)
+7) Split sale with LDManager
 
 8) Add finish (burn remains tokens) in sale and LD manager
 
@@ -29,11 +21,8 @@ Stake/Fetch/Sale
 
 10) Remove withdarw unused from sale
 
-11) Remove inCaseRewardsStuck in stake
-
 12) Add convertFor for case deposit without stake
 
-13) Add isAllowDeposit
 
 
 Safemoon token

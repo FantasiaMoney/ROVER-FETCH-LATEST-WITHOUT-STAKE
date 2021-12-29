@@ -19,25 +19,16 @@ const UniswapV2Factory = artifacts.require('./UniswapV2Factory.sol')
 const UniswapV2Router = artifacts.require('./UniswapV2Router02.sol')
 const UniswapV2Pair = artifacts.require('./UniswapV2Pair.sol')
 const WETH = artifacts.require('./WETH9.sol')
-const WTOKEN = artifacts.require('./WTOKEN.sol')
 const TOKEN = artifacts.require('./TOKEN.sol')
-const Stake = artifacts.require('./Stake.sol')
 const Fetch = artifacts.require('./Fetch.sol')
-const NFT = artifacts.require('./NFT.sol')
 const Sale = artifacts.require('./SaleWithLD.sol')
 const SplitFormula = artifacts.require('./SplitFormula')
 const LDManager = artifacts.require('./LDManager')
 const DAI = artifacts.require('./DAI')
 
-const url = "https://gateway.pinata.cloud/ipfs/QmNVZdcfwaadBzKkDFfGXtqNdKwEbMsQY5xZJxfSxNcK2i/1/"
-const nftType = ".json"
-const NFTPrice = toWei("1")
 const MINLDAmountInDAI = toWei("1000")
 const MAXLDAmountInDAI = toWei("3000")
 const DAIRatePer1000ETH = toWei(String(100000))
-
-const stakeDuration = duration.years(5)
-const antiDumpingDelay = duration.days(30)
 
 let pancakeFactory,
     pancakeRouter,
@@ -45,12 +36,8 @@ let pancakeFactory,
     token,
     pair,
     pancakePairAddress,
-    stake,
-    stakeSecond,
     fetch,
-    nft,
     sale,
-    wtoken,
     splitFormula,
     splitFormulaSecond,
     ldManager,
@@ -69,7 +56,6 @@ contract('Split-formula-test', function([userOne, userTwo, userThree]) {
     pancakeRouter = await UniswapV2Router.new(pancakeFactory.address, weth.address)
 
     token = await TOKEN.new(pancakeRouter.address)
-    wtoken = await WTOKEN.new(token.address)
 
     const initTokenRate = BigNumber(BigNumber(BigNumber(await token.totalSupply()).dividedBy(1000)).integerValue()).toString(10)
 
@@ -86,8 +72,6 @@ contract('Split-formula-test', function([userOne, userTwo, userThree]) {
 
     pancakePairAddress = await pancakeFactory.allPairs(0)
     pair = await UniswapV2Pair.at(pancakePairAddress)
-
-    nft = await NFT.new(10000, userOne, url, nftType)
 
     // ADD DAI to LD
     await dai.approve(pancakeRouter.address, DAIRatePer1000ETH)
