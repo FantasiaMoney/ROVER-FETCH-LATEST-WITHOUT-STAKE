@@ -105,7 +105,7 @@ contract CustomSplitFormula is Ownable {
     external
     onlyOwner
   {
-    require(_currentEthPercentTodex + _currentEthPercentToSale == 100, "Wrorn %");
+    require(_currentEthPercentTodex + _currentEthPercentToSale == 100, "Wrorng %");
     currentEthPercentTodex = _currentEthPercentTodex;
     currentEthPercentToSale = _currentEthPercentToSale;
   }
