@@ -26,14 +26,6 @@ contract Fetch is Ownable {
 
   address public token;
 
-  uint256 public cutPercent = 2;
-
-  bool public isCutActive = true;
-
-  bool public isAllowDeposit = true;
-
-  address public DAOWallet;
-
   /**
   * @dev constructor
   *
@@ -42,15 +34,13 @@ contract Fetch is Ownable {
   * @param _token                 address of token token
   * @param _tokenSale             address of sale
   * @param _splitFormula          address of split formula
-  * @param _DAOWallet             address of DAOWallet
   */
   constructor(
     address _WETH,
     address _dexRouter,
     address _token,
     address _tokenSale,
-    address _splitFormula,
-    address _DAOWallet
+    address _splitFormula
     )
     public
   {
@@ -59,15 +49,13 @@ contract Fetch is Ownable {
     token = _token;
     tokenSale = _tokenSale;
     splitFormula = ISplitFormula(_splitFormula);
-    DAOWallet = _DAOWallet;
   }
 
-
-  function deposit() external payable {
+  function convert() external payable {
     _convertFor(msg.sender);
   }
 
-  function depositFor(address receiver) external payable {
+  function convertFor(address receiver) external payable {
     _convertFor(receiver);
   }
 
@@ -128,39 +116,9 @@ contract Fetch is Ownable {
  }
 
  /**
- * @dev allow owner set cut percent
- */
- function updateCutPercent(uint256 _cutPercent) external onlyOwner {
-   require(_cutPercent > 0, "min %");
-   require(_cutPercent <= 5, "max %");
-   cutPercent = _cutPercent;
- }
-
- /**
- * @dev allow owner enable/disable cut
- */
- function updateCutStatus(bool _status) external onlyOwner {
-   isCutActive = _status;
- }
-
- /**
  * @dev allow owner update splitFormula
  */
  function updateSplitFormula(address _splitFormula) external onlyOwner {
    splitFormula = ISplitFormula(_splitFormula);
- }
-
- /**
- * @dev allow owner update DAOWallet
- */
- function updateDAOWallet(address _DAOWallet) external onlyOwner {
-   DAOWallet = _DAOWallet;
- }
-
- /**
- * @dev allow owner update DAOWallet
- */
- function updateisAllowDeposit(bool _isAllowDeposit) external onlyOwner {
-   isAllowDeposit = _isAllowDeposit;
  }
 }

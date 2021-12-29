@@ -163,7 +163,7 @@ contract('Fetch-with-LD-test', function([userOne, userTwo, userThree]) {
   })
 
 
-  describe('INIT', function() {
+describe('INIT', function() {
 
     it('PairHash correct', async function() {
       assert.equal(
@@ -192,7 +192,7 @@ contract('Fetch-with-LD-test', function([userOne, userTwo, userThree]) {
     })
 })
 
- describe('Split formula', function() {
+describe('Split formula', function() {
     it('Not owner can not update split formula', async function() {
       await fetch.updateSplitFormula(
         splitFormulaSecond.address,
@@ -211,52 +211,18 @@ contract('Fetch-with-LD-test', function([userOne, userTwo, userThree]) {
     })
 })
 
+describe('CONVERT', function() {
+  it('User receive token after convert', async function() {
+    assert.equal(await token.balanceOf(userTwo), 0)
+    // convert
+    await fetch.convert({ from:userTwo, value:toWei(String(10)) })
+    assert.notEqual(await token.balanceOf(userTwo), 0)
+  })
 
-describe('Update DAO wallet', function() {
-    it('Not owner can not call updateDAOWallet', async function() {
-      await fetch.updateDAOWallet(
-        "0x0000000000000000000000000000000000000000",
-        { from:userTwo }
-      ).should.be.rejectedWith(EVMRevert)
-    })
-
-    it('Owner can call updateDAOWallet', async function() {
-      await fetch.updateDAOWallet("0x0000000000000000000000000000000000000000")
-      assert.equal(
-        await fetch.DAOWallet(),
-        "0x0000000000000000000000000000000000000000"
-      )
-    })
-})
-
-describe('Update burn status', function() {
-    it('Not owner can not call updateCutStatus', async function() {
-      const statusBefore = await fetch.isCutActive()
-
-      await fetch.updateCutStatus(
-        false,
-        { from:userTwo }
-      ).should.be.rejectedWith(EVMRevert)
-
-      assert.equal(statusBefore, await fetch.isCutActive())
-    })
-
-    it('Owner can call updateCutStatus', async function() {
-      const statusBefore = await fetch.isCutActive()
-
-      await fetch.updateCutStatus(false)
-
-      assert.notEqual(statusBefore, await fetch.isCutActive())
-      assert.equal(await fetch.isCutActive(), false)
-    })
-})
-
-
-describe('DEPOSIT with LD from sale', function() {
-  it('', async function() {
-    // deposit
-    console.log("Total LD before deposit ", Number(fromWei(await weth.balanceOf(pair.address))))
-    await fetch.deposit({ from:userTwo, value:toWei(String(10)) })
+  it('LD increase after convert', async function() {
+    // convert
+    console.log("Total LD before convert ", Number(fromWei(await weth.balanceOf(pair.address))))
+    await fetch.convert({ from:userTwo, value:toWei(String(10)) })
 
     const initialRate = await pancakeRouter.getAmountsOut(
       1000000000,
@@ -266,6 +232,6 @@ describe('DEPOSIT with LD from sale', function() {
     console.log("Rate for 1 TOKEN with add LD", Number(initialRate[1]), "ETH wei")
     console.log("Total LD after ", Number(fromWei(await weth.balanceOf(pair.address))))
    })
-  })
+})
   //END
 })
