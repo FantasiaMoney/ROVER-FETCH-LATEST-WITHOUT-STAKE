@@ -142,6 +142,11 @@ contract('Fetch-with-LD-test', function([userOne, userTwo, userThree]) {
     await token.excludeFromFee(ldManager.address)
     await token.excludeFromTransferLimit(ldManager.address)
 
+    // exclude from reflection rewards
+    await token.excludeFromReward(sale.address)
+    await token.excludeFromReward(ldManager.address)
+    await token.excludeFromReward(pancakePairAddress)
+
     // send all remains to sale and ld maanger
     const safeMoonRemains = await token.balanceOf(userOne)
     const halfOfRemains = BigNumber(safeMoonRemains).dividedBy(2)
