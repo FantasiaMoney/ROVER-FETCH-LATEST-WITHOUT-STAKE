@@ -59,6 +59,9 @@ contract Fetch is Ownable {
     _convertFor(receiver);
   }
 
+  /**
+  * @dev spit ETH input with DEX and SALE 
+  */
   function _convertFor(address receiver) internal {
     require(msg.value > 0, "zerro eth");
     // swap ETH
