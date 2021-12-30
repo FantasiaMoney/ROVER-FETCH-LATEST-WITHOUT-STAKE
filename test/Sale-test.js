@@ -20,6 +20,7 @@ const UniswapV2Router = artifacts.require('./UniswapV2Router02.sol')
 const UniswapV2Pair = artifacts.require('./UniswapV2Pair.sol')
 const WETH = artifacts.require('./WETH9.sol')
 const TOKEN = artifacts.require('./TOKEN.sol')
+const LDManager = artifacts.require('./LDManager')
 const Sale = artifacts.require('./Sale.sol')
 
 const Beneficiary = "0x6ffFe11A5440fb275F30e0337Fc296f938a287a5"
@@ -30,7 +31,8 @@ let uniswapV2Factory,
     token,
     pair,
     pairAddress,
-    sale
+    sale,
+    ldManager
 
 
 contract('Sale-test', function([userOne, userTwo, userThree]) {
@@ -65,11 +67,19 @@ contract('Sale-test', function([userOne, userTwo, userThree]) {
     pairAddress = await uniswapV2Factory.allPairs(0)
     pair = await UniswapV2Pair.at(pairAddress)
 
+    ldManager = await LDManager.new(
+      uniswapV2Router.address,
+      token.address
+    )
+
     sale = await Sale.new(
       token.address,
       userOne,
-      uniswapV2Router.address
+      uniswapV2Router.address,
+      ldManager.address
     )
+
+    await sale.updateEnabledLDSplit(false)
 
     // exclude sale from fee and balance limit
     await token.excludeFromFee(sale.address)
